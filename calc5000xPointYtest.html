@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculator 5000X Point Y</title>
+    <style>
+        h1 { 	font-family: courier; color: black; font-size:30px;
+				font-weight: 900;
+				}
+		td { 	font-family: courier;
+				color: black;
+				font-size:25px;
+				font-weight: 600;
+				border-width: 0.15em;
+				padding: 0.2 0.3em 0.2 0.3em;
+				border-color: #DDD #888 #888 #DDD; 
+				border-style: solid;}
+		th { 	font-family: courier;
+				color: black;
+				font-size:25px;
+				font-weight: 600;
+				border-width: 0.15em;
+				padding: 0.2 0.3em 0.2 0.3em;
+				border-color: #DDD #888 #888 #DDD; 
+				border-style: solid;
+				background-color: #777;
+				}
+		th:hover {background: hsl(34, 100%, 34%)
+				}
+		th:active {background-color: #555; border-color: #888 #DDD #DDD #888;
+				}		
+				td.white { border-style: none; background: white; }
+				td.display{
+					border-color: #888 #DDD #DDD #888; 
+					background: white;
+					 padding: 0 4em 0 0.2em;
+				}
+				td.display2{
+					border-color: #888 #DDD #DDD #888; 
+					background: white;
+				    padding: 0 4em 0 0.2em;
+					font-size:20px;
+				}
+    </style>
+	<script>
+	var entry = ""; sgn = "";
+	//stack
+	var s = 	{T: 0, Z: 0, Y: 0, X: 0};
+	
+	var g =  	{A: 0, B: 0, C: 0, D: 0,
+				 E: 0, F: 0, G: 0, H: 0};
+    
+	var option = true;
+	function clickStore() {
+	option = true;
+	document.getElementById("store").style.background='green';
+	document.getElementById("recall").style.background='#777';
+	}
+	function clickRecall() {
+	option = false;
+	document.getElementById("recall").style.background='green';
+	document.getElementById("store").style.background='#777';
+	}
+	function showVls() {
+	var f = document.getElementById('display2');
+		f.innerHTML = "";
+		for(i in g){
+		f.innerHTML += i + ": " + g[i].toPrecision(10) + "<br>";
+		}
+	}
+	function storeOrRecall(i) {
+	if(option){
+	g[i] = s.X;
+	showVls();
+	}
+	else
+	s.X = g[i];
+	showStack();
+	}
+	function showEntry(){
+		var e = document.getElementById('entry');
+        e.innerHTML = sgn + entry + "_";
+	}
+	function showStack() {
+	var d = document.getElementById('display');
+		d.innerHTML = "";
+		for(i in s){
+		d.innerHTML += i + ": " + s[i].toPrecision(10) + "<br>";
+		}
+	}
+	// https://www.infoworld.com/article/2077176/using-javascript-and-forms.html
+	function saveData(form) {
+		form.savenums.value = "";
+		for(i in s){
+		i + ": " + s[i].toPrecision(10) + "<br>";
+		}
+		for(i in g){
+		form.savenums.value += g[i] + "#";
+		}
+	}
+	// https://stackoverflow.com/questions/3781142/jquery-or-javascript-how-determine-if-shift-key-being-pressed-while-clicking-an
+	function listenForShiftKey(e){
+    var evt = e || window.event;
+		if (evt.shiftKey) {
+			val = event.key;
+		  if(val == "7"){
+		  divi();
+		  }
+		} 
+	}
+	function KeyP() {
+		var key = event.key;
+		listenForShiftKey(key);
+		if("0" <= key && key <= "9") {
+			clickEntry(key);
+		}
+		else if(key == "."){
+			clickEntry(".");
+		}
+		else if(key == "+"){
+			plus();
+		}
+		else if(key == "-"){
+			minus();
+		}
+		else if(key == "*" || key == "'"){
+			mult();
+		}
+		else if(key == "/"){
+			divi();
+		}
+		else if(key == "Enter"){
+			enter();
+		}
+		else if(key == "Backspace"){
+			ce();
+		}
+		else if(key == "Tab"){
+			cs();
+			}
+		else if(key == "<"){
+		chs();
+		}
+			
+	}
+	function ce(){
+	entry = "";
+	sgn = "";
+	showEntry();
+	}
+	function cs(){
+	s.X = 0;
+	s.T = 0;
+	s.Y = 0;
+	s.Z = 0;
+	showStack();
+	}
+	function plus(){
+		s.X = s.Y+s.X; s.Y = s.Z; s.Z = s.T;
+      	  showStack();
+	}
+	function minus(){
+		s.X = s.Y-s.X; s.Y = s.Z; s.Z = s.T;
+      	  showStack();
+	}
+	function mult(){
+		s.X = s.Y*s.X; s.Y = s.Z; s.Z = s.T;
+      	  showStack();
+	}
+	function divi(){
+		s.X = s.Y/s.X; s.Y = s.Z; s.Z = s.T;
+      	  showStack();
+	}
+	function enter() {
+		s.T = s.Z;
+		s.Z = s.Y;
+		s.Y = s.X;
+		s.X = (sgn+entry)*1;
+		showStack();
+		entry = "";
+		sgn = "";
+		showEntry();
+	}
+	function clickEntry(ch) {
+		entry = entry + ch;
+        showEntry();
+	}
+	function chs(){
+	if(sgn == "") {
+		sgn = "-";
+	}
+	else if(sgn == "-") {
+		sgn = "+";
+	}
+	else if(sgn == "+") {
+	sgn = "-";
+	}
+	showEntry();
+	}
+	</script>
+	</head>
+  <body onkeydown="KeyP()">
+    <h1>Calculator 5000X Point Y</h1>
+    <table>
+		<tr>
+		<td>
+			<table>
+			<tr>
+				<td colspan="4" id="display" class="display">
+					<script>
+					   showStack();
+					</script>
+				</td>
+				<tr>
+				<td id="entry" class="white" colspan="4">_</td>
+				</tr>	
+			 
+				<tr>
+				<th onclick="enter()" colspan="2">enter</th>
+				<th onclick="ce()">ce</th>
+				<th onclick="cs()">cs</th>
+				</tr>
+				<tr>
+				<th onclick="clickEntry('7')">7</th>
+				<th onclick="clickEntry('8')">8</th>
+				<th onclick="clickEntry('9')">9</th>
+				<th onclick="divi()">/</th>
+				</tr>
+				<tr>
+				<th onclick="clickEntry('4')">4</th>
+				<th onclick="clickEntry('5')">5</th>
+				<th onclick="clickEntry('6')">6</th>
+				<th onclick="mult()">*</th>
+				</tr>
+				<tr>
+				<th onclick="clickEntry('1')">1</th>
+				<th onclick="clickEntry('2')">2</th>
+				<th onclick="clickEntry('3')">3</th>
+				<th onclick="minus()">-</th>
+				</tr>
+				<tr>
+				<th onclick="chs()">&plusmn;</th>
+				<th onclick="clickEntry('0')">0</th>
+				<th onclick="clickEntry('.')">.</th>
+				<th onclick="plus()">+</th>
+			</tr>
+			</table>
+			</td>
+			<td >
+			<table>
+			<tr>
+				<td colspan="4" id="display2" class="display2">
+					<script>
+					   showVls();
+					</script>
+				</td>
+				
+			</tr>
+				<th id="store" onclick="clickStore()"colspan="2">store</th>
+				<th id="recall" onclick="clickRecall()"colspan="2">recall</th>
+			<tr>
+				<th onclick="storeOrRecall('A')">A</th>
+				<th onclick="storeOrRecall('B')">B</th>
+				<th onclick="storeOrRecall('C')">C</th>
+				<th onclick="storeOrRecall('D')">D</th>
+			</tr>
+			<tr>
+				<th onclick="storeOrRecall('E')">E</th>
+				<th onclick="storeOrRecall('F')">F</th>
+				<th onclick="storeOrRecall('G')">G</th>
+				<th onclick="storeOrRecall('H')">H</th>
+			</tr>
+			</table>
+			</td>
+		</tr>
+	</table>
+	
+	<form action=\"/saved\">
+	<input type="text" NAME="savenums" VALUE=""><P>
+	<input type="button" NAME="Save" Value="Save" 
+	onClick="saveData(this.form)">
+	<input type="submit" value="Submit">
+	</form>
+  </body>
+</html>

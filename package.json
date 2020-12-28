@@ -1,0 +1,9 @@
+{
+  "name": "kalkylator-enkel",
+  "version": "0.0.0",
+  "description": "KalkylatorEnkel",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
