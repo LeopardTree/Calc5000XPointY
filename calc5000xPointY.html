@@ -89,12 +89,11 @@
 	}
 	// https://www.infoworld.com/article/2077176/using-javascript-and-forms.html
 	function saveData(form) {
-		form.savenums.value = "";
 		for(i in s){
-		form.savenums.value += s[i] + "#";
+		form.savenums.value += s[i] + "\n";
 		}
 		for(i in g){
-		form.savenums.value += g[i] + "#";
+		form.savenums.value += g[i] + "\n";
 		}
 	}
 	// https://stackoverflow.com/questions/3781142/jquery-or-javascript-how-determine-if-shift-key-being-pressed-while-clicking-an
