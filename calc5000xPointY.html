@@ -41,162 +41,9 @@
 					font-size:20px;
 				}
     </style>
-	<script>
-	var entry = ""; sgn = "";
-	//stack
-	var s = 	{T: 0, Z: 0, Y: 0, X: 0};
-	
-	var g =  	{A: 0, B: 0, C: 0, D: 0,
-				 E: 0, F: 0, G: 0, H: 0};
-    
-	var option = true;
-	function clickStore() {
-	option = true;
-	document.getElementById("store").style.background='green';
-	document.getElementById("recall").style.background='#777';
-	}
-	function clickRecall() {
-	option = false;
-	document.getElementById("recall").style.background='green';
-	document.getElementById("store").style.background='#777';
-	}
-	function showVls() {
-	var f = document.getElementById('display2');
-		f.innerHTML = "";
-		for(i in g){
-		f.innerHTML += i + ": " + g[i].toPrecision(10) + "<br>";
-		}
-	}
-	function storeOrRecall(i) {
-	if(option){
-	g[i] = s.X;
-	showVls();
-	}
-	else
-	s.X = g[i];
-	showStack();
-	}
-	function showEntry(){
-		var e = document.getElementById('entry');
-        e.innerHTML = sgn + entry + "_";
-	}
-	function showStack() {
-	var d = document.getElementById('display');
-		d.innerHTML = "";
-		for(i in s){
-		d.innerHTML += i + ": " + s[i].toPrecision(10) + "<br>";
-		}
-	}
-	// https://www.infoworld.com/article/2077176/using-javascript-and-forms.html
-	function saveData(form) {
-		for(i in s){
-		form.savenums.value += s[i] + "\n";
-		}
-		for(i in g){
-		form.savenums.value += g[i] + "\n";
-		}
-	}
-	// https://stackoverflow.com/questions/3781142/jquery-or-javascript-how-determine-if-shift-key-being-pressed-while-clicking-an
-	function listenForShiftKey(e){
-    var evt = e || window.event;
-		if (evt.shiftKey) {
-			val = event.key;
-		  if(val == "7"){
-		  divi();
-		  }
-		} 
-	}
-	function KeyP() {
-		var key = event.key;
-		listenForShiftKey(key);
-		if("0" <= key && key <= "9") {
-			clickEntry(key);
-		}
-		else if(key == "."){
-			clickEntry(".");
-		}
-		else if(key == "+"){
-			plus();
-		}
-		else if(key == "-"){
-			minus();
-		}
-		else if(key == "*" || key == "'"){
-			mult();
-		}
-		else if(key == "/"){
-			divi();
-		}
-		else if(key == "Enter"){
-			enter();
-		}
-		else if(key == "Backspace"){
-			ce();
-		}
-		else if(key == "Tab"){
-			cs();
-			}
-		else if(key == "<"){
-		chs();
-		}
-			
-	}
-	function ce(){
-	entry = "";
-	sgn = "";
-	showEntry();
-	}
-	function cs(){
-	s.X = 0;
-	s.T = 0;
-	s.Y = 0;
-	s.Z = 0;
-	showStack();
-	}
-	function plus(){
-		s.X = s.Y+s.X; s.Y = s.Z; s.Z = s.T;
-      	  showStack();
-	}
-	function minus(){
-		s.X = s.Y-s.X; s.Y = s.Z; s.Z = s.T;
-      	  showStack();
-	}
-	function mult(){
-		s.X = s.Y*s.X; s.Y = s.Z; s.Z = s.T;
-      	  showStack();
-	}
-	function divi(){
-		s.X = s.Y/s.X; s.Y = s.Z; s.Z = s.T;
-      	  showStack();
-	}
-	function enter() {
-		s.T = s.Z;
-		s.Z = s.Y;
-		s.Y = s.X;
-		s.X = (sgn+entry)*1;
-		showStack();
-		entry = "";
-		sgn = "";
-		showEntry();
-	}
-	function clickEntry(ch) {
-		entry = entry + ch;
-        showEntry();
-	}
-	function chs(){
-	if(sgn == "") {
-		sgn = "-";
-	}
-	else if(sgn == "-") {
-		sgn = "+";
-	}
-	else if(sgn == "+") {
-	sgn = "-";
-	}
-	showEntry();
-	}
-	</script>
-	</head>
+	<script type="text/javascript" src="values.js"> </script>
+	<script type="text/javascript" src="calc5000xPointYScript.js"> </script>
+		</head>
   <body onkeydown="KeyP()">
     <h1>Calculator 5000X Point Y</h1>
     <table>
@@ -212,7 +59,6 @@
 				<tr>
 				<td id="entry" class="white" colspan="4">_</td>
 				</tr>	
-			 
 				<tr>
 				<th onclick="enter()" colspan="2">enter</th>
 				<th onclick="ce()">ce</th>
@@ -272,12 +118,38 @@
 			</td>
 		</tr>
 	</table>
+			<table>
+			<tr>
+				<th onclick="sin()">sin</th>
+				<th onclick="cos()">cos</th>
+				<th onclick="tan()">tan</th>
+				<th onclick="asin()">sin⁻¹</th>
+				<th onclick="acos()">cos⁻¹</th>
+				<th onclick="atan()">tan⁻¹</th>
+				<th onclick="hyp()">&radic;(x<sup>2</sup>+y<sup>2</sup>)</th>
+				
+			</tr>
+			<tr>
+				<th onclick="sqrt()">√x</th>
+				<th onclick="logten()">log10</th>
+				<th onclick="logtw()">log2</th>
+				<th onclick="loge()">ln</th>
+				<th onclick="etime()">eˣ</th>
+				<th onclick="powpow()">x<sup>y</sup></th>
+				<th onclick="tenupx()">10<sup>x</sup></th>
+			</tr>
+			<tr> 
+				<th onclick="pi()">π</th>
+				<th onclick="eE()">e</th>
+			</tr>
+			</table>
 	
-	<form action=\"/saved\">
-	<input type="text" NAME="savenums" VALUE=""><P>
+	<form action="/saved" method="get">
+	<input type="test" NAME="savenums" VALUE=""><P>
 	<input type="button" NAME="Save" Value="Save" 
 	onClick="saveData(this.form)">
 	<input type="submit" value="Submit">
 	</form>
+	<p>backspace for ce, tab for cs and &lt for sign change</p>
   </body>
 </html>

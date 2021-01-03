@@ -44,10 +44,9 @@
 	<script>
 	var entry = ""; sgn = "";
 	//stack
-	var s = 	{T: 0, Z: 0, Y: 0, X: 0};
-	
-	var g =  	{A: 0, B: 0, C: 0, D: 0,
-				 E: 0, F: 0, G: 0, H: 0};
+    var s = 	{T: 0, Z: 0, Y: 0, X: 0};
+	//variables
+	var g =  	{A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0};
     
 	var option = true;
 	function clickStore() {
@@ -71,6 +70,7 @@
 	if(option){
 	g[i] = s.X;
 	showVls();
+	saveData();
 	}
 	else
 	s.X = g[i];
@@ -88,14 +88,27 @@
 		}
 	}
 	// https://www.infoworld.com/article/2077176/using-javascript-and-forms.html
-	function saveData(form) {
-		form.savenums.value = "";
-		for(i in s){
-		i + ": " + s[i].toPrecision(10) + "<br>";
-		}
-		for(i in g){
-		form.savenums.value += g[i] + "#";
-		}
+	function saveData() {
+		
+		document.getElementById("T").value = s.T;
+		document.getElementById("Z").value = s.Z;
+		document.getElementById("Y").value = s.Y;
+		document.getElementById("X").value = s.X;
+		document.getElementById("A").value = g.A;
+		document.getElementById("B").value = g.B;
+		document.getElementById("C").value = g.C;
+		document.getElementById("D").value = g.D;
+		document.getElementById("E").value = g.E;
+		document.getElementById("F").value = g.F;
+		document.getElementById("G").value = g.G;
+		document.getElementById("H").value = g.H;
+	
+	}
+	function saveStack() {
+		form.X.value = 5;
+	}
+	function saveVars(i) {
+		form[i].value = g[i];
 	}
 	// https://stackoverflow.com/questions/3781142/jquery-or-javascript-how-determine-if-shift-key-being-pressed-while-clicking-an
 	function listenForShiftKey(e){
@@ -274,10 +287,33 @@
 		</tr>
 	</table>
 	
-	<form action=\"/saved\">
-	<input type="text" NAME="savenums" VALUE=""><P>
+	<form action="/saved" method="get">
 	<input type="button" NAME="Save" Value="Save" 
-	onClick="saveData(this.form)">
+	onClick="saveData()">
+	<label for="T">T:</label>
+	<input type="number" name="T" id="T" value=""><P>
+	<label for="Z">Z:</label>
+	<input type="number" name="Z" id="Z" value=""><P>
+	<label for="Y">Y:</label>
+	<input type="number" name="Y" id="Y" value=""><P>
+	<label for="X">X:</label>
+	<input type="number" name="X" id="X" value=""><P>
+	<label for="A">A:</label>
+	<input type="number" name="A" id="A" value=""><P>
+	<label for="B">B:</label>
+	<input type="number" name="B" id="B" value=""><P>
+	<label for="C">C:</label>
+	<input type="number" name="C" id="C" value=""><P>
+	<label for="D">D:</label>
+	<input type="number" name="D" id="D" value=""><P>
+	<label for="E">E:</label>
+	<input type="number" name="E" id="E" value=""><P>
+	<label for="F">F:</label>
+	<input type="number" name="F" id="F" value=""><P>
+	<label for="G">G:</label>
+	<input type="number" name="G" id="G" value=""><P>
+	<label for="H">H:</label>
+	<input type="number" name="H" id="H" value=""><P>
 	<input type="submit" value="Submit">
 	</form>
   </body>
